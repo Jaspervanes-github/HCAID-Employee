@@ -33,6 +33,9 @@ function NavBar(props) {
 
             <Typography variant="h6" className={classes.menuItem}>
                 <Link to="/">Home</Link>
+                <Link to="/Predict">Predict</Link>
+                <Link to="/HowItWorks">HowItWorks</Link>
+                <Link to="/Feedback">Feedback</Link>
             </Typography>
         </Toolbar>
     )

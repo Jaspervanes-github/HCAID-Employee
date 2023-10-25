@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from '../components/NavBar';
 
-export default class Home extends Component {
+export default class HowItWorks extends Component {
   constructor(props) {
     super(props);
   }
@@ -9,13 +9,10 @@ export default class Home extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="Home">
+        <div className="HowItWorks">
           <NavBar />
-          <h1>Hello</h1>
-          <p>Predict if an employee of yours is going to quit!</p>
-          <a href='/Predict'>
-            <button>Start</button>
-          </a>
+          <h1></h1>
+          <p></p>
         </div>
       </React.Fragment>
     )
