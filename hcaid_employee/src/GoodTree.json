@@ -1,0 +1,82 @@
+{
+    "criterion": "gini",
+    "splitter": "best",
+    "max_depth": [
+        [
+            "i8",
+            false,
+            true
+        ],
+        {
+            "0": 8,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0
+        }
+    ],
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "min_weight_fraction_leaf": 0,
+    "max_features": null,
+    "max_leaf_nodes": null,
+    "random_state": null,
+    "min_impurity_decrease": 0,
+    "class_weight": null,
+    "ccp_alpha": 0,
+    "feature_names_in_": [
+        null,
+        [
+            0
+        ],
+        {
+            "0": 98
+        }
+    ],
+    "n_features_in_": 9,
+    "n_outputs_": 1,
+    "classes_": [
+        null,
+        [
+            0
+        ],
+        {
+            "0": 98
+        }
+    ],
+    "n_classes_": [
+        [
+            "i8",
+            false,
+            true
+        ],
+        {
+            "0": 2,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0
+        }
+    ],
+    "max_features_": 9,
+    "tree_": [
+        9,
+        [
+            null,
+            [
+                0
+            ],
+            {
+                "0": 98
+            }
+        ],
+        1
+    ],
+    "_sklearn_version": "1.3.0"
+}
