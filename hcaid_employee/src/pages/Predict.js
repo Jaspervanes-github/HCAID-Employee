@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import NavBar from '../components/NavBar';
-import Json from '../GoodTree.json'
-import decisionTree from 'decision-tree';
+import tf from '@tensorflow/tfjs';
+import tfn from '@tensorflow/tfjs-node'
 
 export default class Predict extends Component {
   constructor(props) {
     super(props);
   }
 
-  getDtree()
+  async getDtree()
   {
-    var trainedTree = new decisionTree(Json);
+    const handler = tfn.io.fileSystem("hcaid_employee\src\assets\models\GoodTree.json");
+    const model = await tf.loadLayersModel(handler);
   }
 
   render() {
@@ -18,6 +19,7 @@ export default class Predict extends Component {
       <React.Fragment>
         <div className="Predict">
           <NavBar />
+          <button onClick={this.getDtree}>Click on me!</button>
         </div>
       </React.Fragment>
     )
