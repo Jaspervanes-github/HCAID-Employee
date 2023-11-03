@@ -15,6 +15,9 @@ function PredictForm(props) {
     const [experience, setExperience] = useState('');
     const [education, setEducation] = useState('');
 
+    const [showGraph, setShowGraph] = useState(false);
+    const [graphData, setGraphData] = useState(null);
+
     const joiningYearOptions = [];
     const paymentTierOptions = [{label: "0", value: 0}, {label: "1", value: 1}, {label: "2", value: 2}, {label: "3", value: 3}];
     const ageOptions = []
@@ -44,8 +47,28 @@ function PredictForm(props) {
                         EverBenched: everBenched,
                         Experience: experience,
                         Education: education,
-                    })
+                    }, setGraphData, setShowGraph)
                 }}>Make Prediction</Button>
+
+            {showGraph && graphData && (
+                <div className="graphContainer">
+                <h2>Shap Waterfall Plot</h2>
+                <WaterfallGraph
+                    categories={[
+                    "JoiningYear",
+                    "PaymentTier",
+                    "Age",
+                    "Gender",
+                    "EverBenched",
+                    "Experience",
+                    "EducationBachelor",
+                    "EducationMaster",
+                    "EducationPHD"
+                    ]}
+                    values={graphData}
+                />
+                </div>
+            )}
         </div>
     )
 }
@@ -73,7 +96,7 @@ function generateOptions(joiningYearOptions, ageOptions, experienceOptions){
     }
 }
 
-async function handleSubmit(inputs){
+async function handleSubmit(inputs, setGraphData, setShowGraph){
     let hasEmpty = false;
     for (var key in inputs) {
           if (inputs[key] === null || inputs[key] === undefined || inputs[key] === "") {
@@ -109,20 +132,10 @@ async function handleSubmit(inputs){
 
           if (response.ok) {
             const result = await response.json();
-            console.log(result.shap_values);
+            console.log(result.shap_values[0]);
             //TODO: Shap Graph
-            WaterfallGraph([
-                "JoiningYear", 
-                "PaymentTier", 
-                "Age", 
-                "Gender", 
-                "EverBenched", 
-                "Experience", 
-                "EducationBachelor", 
-                "EducationMaster", 
-                "EducationPHD"
-            ], 
-            result.shap_values[0]);
+            setGraphData(result.shap_values[0]);
+            setShowGraph(true);
           } else {
             //TODO Netter maken
             throw new Error('Failed to fetch data');
