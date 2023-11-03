@@ -3,6 +3,7 @@ import "./index.css";
 import PredictQuestion from '../PredictQuestion';
 import { toast } from 'react-toastify';
 import { Button } from '@material-ui/core';
+import WaterfallGraph from '../../WaterfallGraph';
 
 
 function PredictForm(props) {
@@ -109,6 +110,19 @@ async function handleSubmit(inputs){
           if (response.ok) {
             const result = await response.json();
             console.log(result.shap_values);
+            //TODO: Shap Graph
+            <WaterfallGraph categories={[
+                "JoiningYear", 
+                "PaymentTier", 
+                "Age", 
+                "Gender", 
+                "EverBenched", 
+                "Experience", 
+                "EducationBachelor", 
+                "EducationMaster", 
+                "EducationPHD"
+            ]} 
+            values={result.shap_values}/>
           } else {
             throw new Error('Failed to fetch data');
           }
