@@ -54,11 +54,22 @@ const WaterfallGraph = (categories, values) => {
     .selectAll()
     .data(data)
     .join("text")
-    .attr("text-anchor", d => d.value < 0 ? "end" : "start")
-    .attr("x", (d) => x(d.value) + Math.sign(d.value - 0) * 4)
+    .attr("text-anchor", "start")
+    .attr("x", -200) // Adjust the position to the left of the bars
     .attr("y", (d) => y(d.category) + y.bandwidth() / 2)
     .attr("dy", "0.35em")
-    .text(d => format(d.value));
+    .text(d => d.category);
+  // svg.append("g")
+  //   .attr("font-family", "sans-serif")
+  //   .attr("font-size", 10)
+  //   .selectAll()
+  //   .data(data)
+  //   .join("text")
+  //   .attr("text-anchor", d => d.value < 0 ? "end" : "start")
+  //   .attr("x", (d) => x(d.value) + Math.sign(d.value - 0) * 4)
+  //   .attr("y", (d) => y(d.category) + y.bandwidth() / 2)
+  //   .attr("dy", "0.35em")
+  //   .text(d => format(d.value));
 
   // Add the axes and grid lines.
   svg.append("g")
