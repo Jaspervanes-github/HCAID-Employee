@@ -10,10 +10,12 @@
 
 .feedbackForm .title {
     width: 10%;
+    background-color: white;
 }
 
 .feedbackForm .content {
     width: 70%;
+    background-color: white;
 }
 
 .feedbackForm .SubmitButton {
