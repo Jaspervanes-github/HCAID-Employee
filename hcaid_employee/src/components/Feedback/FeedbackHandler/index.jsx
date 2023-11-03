@@ -35,6 +35,7 @@ function FeedbackHandler(props) {
     */
     return (
         <div className="feedbackHandler">
+          <h1>Feedback Form</h1>
             <FeedbackForm handleSubmit={handleSubmit} items={items} setItems={setItems} />
             <FeedbackShowcase items={items}/>
         </div >
