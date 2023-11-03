@@ -1,0 +1,23 @@
+.feedbackForm {
+    display: grid;
+    grid-gap: 1rem;
+
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 90%;
+}
+
+.feedbackForm .title {
+    width: 10%;
+}
+
+.feedbackForm .content {
+    width: 70%;
+}
+
+.feedbackForm .SubmitButton {
+    margin-left: 70%;
+    margin-bottom: 2%;
+    width: fit-content;
+}
