@@ -72,7 +72,7 @@ function generateOptions(joiningYearOptions, ageOptions, experienceOptions){
     }
 }
 
-function handleSubmit(inputs){
+async function handleSubmit(inputs){
     let hasEmpty = false;
     for (var key in inputs) {
           if (inputs[key] === null || inputs[key] === undefined || inputs[key] === "") {
@@ -97,7 +97,22 @@ function handleSubmit(inputs){
         ]
     }
         console.log(JSON.stringify(features));
-        // Do something with the 'inputs' object, e.g., make predictions or further processing
+        
+        const response = await fetch('http://localhost:5000/predict', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(features),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log(result.shap_values);
+          } else {
+            throw new Error('Failed to fetch data');
+          }
+          
     }else {
         toast.error('Please fill in all the answers before predicting!', {
             position: "bottom-right",
