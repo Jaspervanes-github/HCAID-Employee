@@ -111,7 +111,7 @@ async function handleSubmit(inputs){
             const result = await response.json();
             console.log(result.shap_values);
             //TODO: Shap Graph
-            <WaterfallGraph categories={[
+            WaterfallGraph([
                 "JoiningYear", 
                 "PaymentTier", 
                 "Age", 
@@ -121,9 +121,10 @@ async function handleSubmit(inputs){
                 "EducationBachelor", 
                 "EducationMaster", 
                 "EducationPHD"
-            ]} 
-            values={result.shap_values}/>
+            ], 
+            result.shap_values[0]);
           } else {
+            //TODO Netter maken
             throw new Error('Failed to fetch data');
           }
           
