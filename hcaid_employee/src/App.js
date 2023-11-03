@@ -1,6 +1,8 @@
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Route, Routes } from "react-router-dom";
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 import { Component } from 'react';
 import Home from "./pages/Home";
@@ -43,7 +45,20 @@ export default class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <div className="App">
+      <ToastContainer
+      position="bottom-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      limit={3}
+      />        
+      <div className="App">
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/Predict" element={<Predict />} />
