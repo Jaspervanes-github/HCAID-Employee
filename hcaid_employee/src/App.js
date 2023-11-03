@@ -60,10 +60,10 @@ export default class App extends Component {
       />        
       <div className="App">
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/Predict" element={<Predict />} />
-            <Route exact path="/HowItWorks" element={<HowItWorks />} />
-            <Route exact path="/Feedback" element={<Feedback />} />
+            <Route exact path="/HCAID-Employee" element={<Home />} />
+            <Route exact path="/HCAID-Employee/Predict" element={<Predict />} />
+            <Route exact path="/HCAID-Employee/HowItWorks" element={<HowItWorks />} />
+            <Route exact path="/HCAID-Employee/Feedback" element={<Feedback />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
         </div>
