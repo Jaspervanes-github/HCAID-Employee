@@ -17,7 +17,7 @@ export default class Home extends Component {
           <p>With the use of this app you can predict if an employee of yours is going to quit or not!
             Start predicting now!
             </p>
-          <a href='/Predict'>
+          <a href='/HCAID-Employee/ Predict'>
             <button>Start</button>
           </a>
         </div>
