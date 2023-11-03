@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import "./index.css";
 import PredictQuestion from '../PredictQuestion';
 import { toast } from 'react-toastify';
@@ -19,61 +19,48 @@ function PredictForm(props) {
     const [graphData, setGraphData] = useState(null);
 
     const joiningYearOptions = [];
-    const paymentTierOptions = [{label: "0", value: 0}, {label: "1", value: 1}, {label: "2", value: 2}, {label: "3", value: 3}];
+    const paymentTierOptions = [{ label: "0", value: 0 }, { label: "1", value: 1 }, { label: "2", value: 2 }, { label: "3", value: 3 }];
     const ageOptions = []
-    const genderOptions = [{label: "Male", value: 1}, {label: "Female", value: 0}];
-    const everBenchedOptions = [{label: "No", value: 0}, {label: "Yes", value: 1}];
+    const genderOptions = [{ label: "Male", value: 1 }, { label: "Female", value: 0 }];
+    const everBenchedOptions = [{ label: "No", value: 0 }, { label: "Yes", value: 1 }];
     const experienceOptions = [];
-    const educationOptions = [{label: "Bachelor", value: 4}, {label: "Master", value: 2}, {label: "PHD", value: 1}];
+    const educationOptions = [{ label: "Bachelor", value: 4 }, { label: "Master", value: 2 }, { label: "PHD", value: 1 }];
     generateOptions(joiningYearOptions, ageOptions, experienceOptions);
 
     return (
         <div className='predictForm'>
             <div className="predictQuestions">
-                    <PredictQuestion question="What year did the employee join the company?" setValue={setJoiningYear} options={joiningYearOptions}/>
-                    <PredictQuestion question="In what payment tier is the employee(0-3)?" setValue={setPaymentTier} options={paymentTierOptions}/>
-                    <PredictQuestion question="What age is the employee?" setValue={setAge} options={ageOptions}/>
-                    <PredictQuestion question="What is the gender of the employee(m/f)?" setValue={setGender} options={genderOptions}/>
-                    <PredictQuestion question="Was the employee ever benched?" setValue={setEverBenched} options={everBenchedOptions}/>
-                    <PredictQuestion question="How many years of experience does the employee have in their current field of work?" setValue={setExperience} options={experienceOptions}/>
-                    <PredictQuestion question="What is the education level of the employee(bachelor/phd/master)?" setValue={setEducation} options={educationOptions}/>
-                    </div >
-                <Button variant="contained" onClick={function(e){ 
-                    handleSubmit({
-                        JoiningYear: joiningYear,
-                        PaymentTier: paymentTier,
-                        Age: age,
-                        Gender: gender,
-                        EverBenched: everBenched,
-                        Experience: experience,
-                        Education: education,
-                    }, setGraphData, setShowGraph)
-                }}>Make Prediction</Button>
+                <PredictQuestion question="What year did the employee join the company?" setValue={setJoiningYear} options={joiningYearOptions} />
+                <PredictQuestion question="In what payment tier is the employee(0-3)?" setValue={setPaymentTier} options={paymentTierOptions} />
+                <PredictQuestion question="What age is the employee?" setValue={setAge} options={ageOptions} />
+                <PredictQuestion question="What is the gender of the employee(m/f)?" setValue={setGender} options={genderOptions} />
+                <PredictQuestion question="Was the employee ever benched?" setValue={setEverBenched} options={everBenchedOptions} />
+                <PredictQuestion question="How many years of experience does the employee have in their current field of work?" setValue={setExperience} options={experienceOptions} />
+                <PredictQuestion question="What is the education level of the employee(bachelor/phd/master)?" setValue={setEducation} options={educationOptions} />
+            </div >
+            <Button variant="contained" onClick={function (e) {
+                handleSubmit({
+                    JoiningYear: joiningYear,
+                    PaymentTier: paymentTier,
+                    Age: age,
+                    Gender: gender,
+                    EverBenched: everBenched,
+                    Experience: experience,
+                    Education: education,
+                }, setGraphData, setShowGraph)
+            }}>Make Prediction</Button>
 
             {showGraph && graphData && (
                 <div className="graphContainer">
-                <h2>Shap Waterfall Plot</h2>
-                <WaterfallGraph
-                    categories={[
-                    "JoiningYear",
-                    "PaymentTier",
-                    "Age",
-                    "Gender",
-                    "EverBenched",
-                    "Experience",
-                    "EducationBachelor",
-                    "EducationMaster",
-                    "EducationPHD"
-                    ]}
-                    values={graphData}
-                />
+                    <h2>Shap Waterfall Plot</h2>
+                    <div dangerouslySetInnerHTML={{ __html: graphData }} />
                 </div>
             )}
         </div>
     )
 }
 
-function generateOptions(joiningYearOptions, ageOptions, experienceOptions){
+function generateOptions(joiningYearOptions, ageOptions, experienceOptions) {
     for (let year = 2023; year >= 1980; year--) {
         joiningYearOptions.push({
             label: year.toString(),
@@ -96,52 +83,65 @@ function generateOptions(joiningYearOptions, ageOptions, experienceOptions){
     }
 }
 
-async function handleSubmit(inputs, setGraphData, setShowGraph){
+async function handleSubmit(inputs, setGraphData, setShowGraph) {
     let hasEmpty = false;
     for (var key in inputs) {
-          if (inputs[key] === null || inputs[key] === undefined || inputs[key] === "") {
+        if (inputs[key] === null || inputs[key] === undefined || inputs[key] === "") {
             hasEmpty = true;
-          }
-      }
+        }
+    }
     console.log(inputs);
     console.log(hasEmpty);
 
     if (!hasEmpty) {
         let educationBinary = (inputs.Education >>> 0).toString(2).padStart(3, '0');
-        const features = {features: [
-            inputs.JoiningYear, 
-            inputs.PaymentTier, 
-            inputs.Age, 
-            inputs.Gender, 
-            inputs.EverBenched, 
-            inputs.Experience, 
-            educationBinary.substring(0,1), 
-            educationBinary.substring(1,2), 
-            educationBinary.substring(2,3)
-        ]
-    }
+        const features = {
+            features: [
+                inputs.JoiningYear,
+                inputs.PaymentTier,
+                inputs.Age,
+                inputs.Gender,
+                inputs.EverBenched,
+                inputs.Experience,
+                educationBinary.substring(0, 1),
+                educationBinary.substring(1, 2),
+                educationBinary.substring(2, 3)
+            ]
+        }
         console.log(JSON.stringify(features));
-        
+
         const response = await fetch('http://localhost:5000/predict', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(features),
-          });
+        });
 
-          if (response.ok) {
+        if (response.ok) {
             const result = await response.json();
             console.log(result.shap_values[0]);
             //TODO: Shap Graph
-            setGraphData(result.shap_values[0]);
+            let mySvg = WaterfallGraph([
+                "JoiningYear",
+                "PaymentTier",
+                "Age",
+                "Gender",
+                "EverBenched",
+                "Experience",
+                "EducationBachelor",
+                "EducationMaster",
+                "EducationPHD"
+            ],
+                result.shap_values[0]);
+            setGraphData(mySvg);
             setShowGraph(true);
-          } else {
+        } else {
             //TODO Netter maken
             throw new Error('Failed to fetch data');
-          }
-          
-    }else {
+        }
+
+    } else {
         toast.error('Please fill in all the answers before predicting!', {
             position: "bottom-right",
             autoClose: 5000,
@@ -151,7 +151,7 @@ async function handleSubmit(inputs, setGraphData, setShowGraph){
             draggable: true,
             progress: undefined,
             theme: "colored",
-            });
+        });
     }
 }
 
