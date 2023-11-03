@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from '../components/Navbar';
-import Banner from '../components/Banner';
 import FeedbackHandler from '../components/Feedback/FeedbackHandler';
+import Banner from '../components/Banner';
 
 export default class Feedback extends Component {
   constructor(props) {
