@@ -32,7 +32,7 @@ const WaterfallGraph = (categories, values) => {
   const format = d3.format('+.2f');
 
   // Create the SVG container.
-  const svg = d3.create("svg")
+  const svg = d3.create("svg:svg")
     .attr("viewBox", [0, 0, width, height])
     .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 

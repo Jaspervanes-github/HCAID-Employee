@@ -4,6 +4,7 @@ import PredictQuestion from '../PredictQuestion';
 import { toast } from 'react-toastify';
 import { Button } from '@material-ui/core';
 import WaterfallGraph from '../../WaterfallGraph';
+import PredictionResult from '../PredictionResult';
 
 
 function PredictForm(props) {
@@ -15,8 +16,10 @@ function PredictForm(props) {
     const [experience, setExperience] = useState('');
     const [education, setEducation] = useState('');
 
+    const [showPopup, setShowPopup] = useState(false);
     const [showGraph, setShowGraph] = useState(false);
     const [graphData, setGraphData] = useState(null);
+    const [predictionResult, setPredictionResult] = useState('');
 
     const joiningYearOptions = [];
     const paymentTierOptions = [{ label: "0", value: 0 }, { label: "1", value: 1 }, { label: "2", value: 2 }, { label: "3", value: 3 }];
@@ -39,24 +42,35 @@ function PredictForm(props) {
                 <PredictQuestion question="How many years of experience does the employee have in their current field of work?" setValue={setExperience} options={experienceOptions} />
                 <PredictQuestion question="What is the education level of the employee(bachelor/phd/master)?" setValue={setEducation} options={educationOptions} />
             </div >
-            <Button variant="contained" onClick={function (e) {
-                handleSubmit({
-                    JoiningYear: joiningYear,
-                    PaymentTier: paymentTier,
-                    Age: age,
-                    Gender: gender,
-                    EverBenched: everBenched,
-                    Experience: experience,
-                    Education: education,
-                }, setGraphData, setShowGraph)
-            }}>Make Prediction</Button>
+            
+            <Button variant="contained" onClick={function (e) 
+                {
+                    handleSubmit({
+                        JoiningYear: joiningYear,
+                        PaymentTier: paymentTier,
+                        Age: age,
+                        Gender: gender,
+                        EverBenched: everBenched,
+                        Experience: experience,
+                        Education: education,
+                    }, setGraphData, setShowGraph, setShowPopup, setPredictionResult)
+                }}>Make Prediction</Button>
 
-            {showGraph && graphData && (
-                <div className="graphContainer">
-                    <h2>Shap Waterfall Plot</h2>
-                    <div dangerouslySetInnerHTML={{ __html: graphData }} />
-                </div>
-            )}
+            {showGraph && graphData && showPopup && predictionResult &&(
+                <div className="predictResult">
+                    <PredictionResult predictionResult={predictionResult} graphData={graphData} feautureNames={[
+                        "JoiningYear",
+                        "PaymentTier",
+                        "Age",
+                        "Gender",
+                        "EverBenched",
+                        "Experience",
+                        "EducationBachelor",
+                        "EducationMaster",
+                        "EducationPHD"
+                    ]} />
+                </div >
+                )}
         </div>
     )
 }
@@ -84,7 +98,7 @@ function generateOptions(joiningYearOptions, ageOptions, experienceOptions) {
     }
 }
 
-async function handleSubmit(inputs, setGraphData, setShowGraph) {
+async function handleSubmit(inputs, setGraphData, setShowGraph, setShowPopup, setPredictionResult) {
     let hasEmpty = false;
     for (var key in inputs) {
         if (inputs[key] === null || inputs[key] === undefined || inputs[key] === "") {
@@ -111,7 +125,7 @@ async function handleSubmit(inputs, setGraphData, setShowGraph) {
         }
         console.log(JSON.stringify(features));
 
-        const response = await fetch('https://workforcewatchapi.onrender.com/predict', {
+        const response = await fetch('https://workforcewatchapi.onrender.com/predict_good', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,7 +136,8 @@ async function handleSubmit(inputs, setGraphData, setShowGraph) {
         if (response.ok) {
             const result = await response.json();
             console.log(result.shap_values[0]);
-            //TODO: Shap Graph
+            console.log(result.prediction)
+
             let mySvg = WaterfallGraph([
                 "JoiningYear",
                 "PaymentTier",
@@ -135,8 +150,22 @@ async function handleSubmit(inputs, setGraphData, setShowGraph) {
                 "EducationPHD"
             ],
                 result.shap_values[0]);
-            setGraphData(mySvg);
+
+            setPredictionResult(result);
+            setGraphData(new XMLSerializer().serializeToString(mySvg));
             setShowGraph(true);
+            setShowPopup(true);
+
+            toast.success('Prediction Successful: Scroll down to see prediction!', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
         } else {
             //TODO Netter maken
             throw new Error('Failed to fetch data');

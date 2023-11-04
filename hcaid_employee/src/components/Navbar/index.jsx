@@ -7,7 +7,7 @@ import "./index.css";
 function NavBar(props) {
     const navigate = useNavigate();
     return (
-<div className="navbar">
+        <div className="navbar">
             <Toolbar className="bar">
                 <Button size="large" className="menuButton" onClick={() => { navigate("/HCAID-Employee") }}>
                     Home
