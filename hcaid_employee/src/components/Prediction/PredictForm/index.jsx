@@ -111,7 +111,7 @@ async function handleSubmit(inputs, setGraphData, setShowGraph) {
         }
         console.log(JSON.stringify(features));
 
-        const response = await fetch('http://localhost:5000/predict', {
+        const response = await fetch('https://workforcewatchapi.onrender.com/predict', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

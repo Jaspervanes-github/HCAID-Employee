@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import pickle
+import joblib
 import shap
 import numpy as np
 from flask_cors import CORS
@@ -8,9 +8,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# Load your pickled model and prepare a SHAP explainer during application startup
-with open('DecisionTreeGood.pickle', 'rb') as model_file:
-    model = pickle.load(model_file)
+model = joblib.load('Good_model.joblib')
 
 # Define a SHAP explainer for your model
 explainer = shap.Explainer(model)
