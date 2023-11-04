@@ -30,6 +30,7 @@ function PredictForm(props) {
     return (
         <div className='predictForm'>
             <div className="predictQuestions">
+                <h1>Make a Prediction</h1>
                 <PredictQuestion question="What year did the employee join the company?" setValue={setJoiningYear} options={joiningYearOptions} />
                 <PredictQuestion question="In what payment tier is the employee(0-3)?" setValue={setPaymentTier} options={paymentTierOptions} />
                 <PredictQuestion question="What age is the employee?" setValue={setAge} options={ageOptions} />

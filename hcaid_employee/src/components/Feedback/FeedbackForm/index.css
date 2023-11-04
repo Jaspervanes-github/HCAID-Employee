@@ -10,14 +10,19 @@
 
 .feedbackForm .title {
     width: 10%;
+    background-color: white;
 }
 
 .feedbackForm .content {
     width: 70%;
+    background-color: white;
 }
 
 .feedbackForm .SubmitButton {
     margin-left: 70%;
     margin-bottom: 2%;
     width: fit-content;
+
+    border: 3px solid rgb(51, 51, 51);
+    border-radius: 15px;
 }
