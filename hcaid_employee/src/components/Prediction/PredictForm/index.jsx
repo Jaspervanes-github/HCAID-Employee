@@ -32,8 +32,17 @@ function PredictForm(props) {
 
     return (
         <div className='predictForm'>
+
+            <h2>Make a Prediction</h2>
+            <p>We appreciate your trust in WorkforceWatch to provide valuable insights into your team's dynamics. Before we proceed, we want to assure you that:</p>
+
+            <h3>Your Data Privacy Matters</h3>
+            <p>At WorkforceWatch, we prioritize the security and privacy of your data. We do not store any information you provide for the prediction process. Your data is processed in real-time, and once the prediction is made, it is not retained in our system.</p>
+
+            <h3>Empower Your Decision-Making</h3>
+            <p>Now, let's dive into the predictions! By leveraging advanced algorithms, we aim to empower you with strategic insights that can guide your decision-making process and enhance your workforce management strategies.</p>
+
             <div className="predictQuestions">
-                <h1>Make a Prediction</h1>
                 <PredictQuestion question="What year did the employee join the company?" setValue={setJoiningYear} options={joiningYearOptions} />
                 <PredictQuestion question="In what payment tier is the employee(0-3)?" setValue={setPaymentTier} options={paymentTierOptions} />
                 <PredictQuestion question="What age is the employee?" setValue={setAge} options={ageOptions} />
@@ -68,7 +77,16 @@ function PredictForm(props) {
                         "EducationBachelor",
                         "EducationMaster",
                         "EducationPHD"
-                    ]} />
+                    ]} 
+                    featureValues={[
+                        joiningYear,
+                        paymentTier,
+                        age,
+                        gender,
+                        everBenched,
+                        experience,
+                        education, education, education
+                    ]}/>
                 </div >
                 )}
         </div>
@@ -76,7 +94,7 @@ function PredictForm(props) {
 }
 
 function generateOptions(joiningYearOptions, ageOptions, experienceOptions) {
-    for (let year = 2023; year >= 1980; year--) {
+    for (let year = 2019; year >= 1980; year--) {
         joiningYearOptions.push({
             label: year.toString(),
             value: year
@@ -125,6 +143,17 @@ async function handleSubmit(inputs, setGraphData, setShowGraph, setShowPopup, se
         }
         console.log(JSON.stringify(features));
 
+        toast.warning('Making Prediction: Please wait...', {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+
         const response = await fetch('https://workforcewatchapi.onrender.com/predict_good', {
             method: 'POST',
             headers: {
@@ -167,7 +196,16 @@ async function handleSubmit(inputs, setGraphData, setShowGraph, setShowPopup, se
                 theme: "colored",
             });
         } else {
-            //TODO Netter maken
+            toast.error('Cant make prediction: Please contact the developers', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
             throw new Error('Failed to fetch data');
         }
 

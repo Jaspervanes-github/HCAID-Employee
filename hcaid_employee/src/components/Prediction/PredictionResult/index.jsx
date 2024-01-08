@@ -1,11 +1,15 @@
 import React from 'react'
 import "./index.css";
+import { Button } from '@material-ui/core';
+import { useNavigate } from "react-router-dom";
 
 
 function PredictionResult(props) {
     const prediction = props.predictionResult.prediction;
     const featureImportanceValues = props.predictionResult.shap_values[0];
     const featureNames = props.feautureNames;
+    const featureValues = props.featureValues;
+    const navigate = useNavigate();
 
     return (
         <div className="predicitonResult">
@@ -27,17 +31,21 @@ function PredictionResult(props) {
                     <div dangerouslySetInnerHTML={{ __html: props.graphData }} />
                 </div>
 
-                {generateFeautureExplanation(featureImportanceValues, featureNames)}
+                {generateFeautureExplanation(featureImportanceValues, featureNames, featureValues)}
 
                 These values provide insights into which factors are considered more influential by the AI model. Remember, these results are based on historical data and patterns, and individual circumstances may vary.
 
-                We hope this explanation clarifies how the AI model arrived at its prediction. If you have any further questions or need additional assistance, feel free to leave some feedback on the "Feedback" page!
+                We hope this explanation clarifies how the AI model arrived at its prediction. If you have any further questions or need additional assistance, feel free to leave some feedback on the "Feedback" page! This will help us improve the AI model and the user experience all together.
+                <p />
+                <Button size="large" className="feedbackButton" variant="contained" onClick={() => { navigate("/HCAID-Employee/Feedback") }}>
+                Please leave some feedback
+                </Button>
                 
     </div >
     )
 }
 
-function generateFeautureExplanation(featureImportanceValues, featureNames){
+function generateFeautureExplanation(featureImportanceValues, featureNames, featureValues){
     // Normalize feature importance values
     const sum = featureImportanceValues.reduce((acc, val) => acc + Math.abs(val), 0);
     const normalizedValues = featureImportanceValues.map(value => value / sum);
@@ -52,6 +60,8 @@ function generateFeautureExplanation(featureImportanceValues, featureNames){
         "0.5": "strongly positively influential",
         "0.75": "extremely positively influential"
     };
+    
+    const transformedValues = convertFeatureValues(featureValues);
 
     const featureExplanations = normalizedValues.map((value, index) => {
         const featureName = featureNames[index];
@@ -62,14 +72,49 @@ function generateFeautureExplanation(featureImportanceValues, featureNames){
         const impactType = value < 0 ? "lower" : "higher";
 
         return (
-        <div key={index}>
-            <strong>{featureName}:</strong> {value.toFixed(3)}<br />
-            A {impactType} value suggests that {featureName.toLowerCase()} is {impactDescription}, according to the model.
-            <br /><br />
-        </div>
-        );
-    });
+            <div key={index}>
+              <strong>{featureName}:</strong> {value.toFixed(3)}<br />
+              A {impactType} value suggests that {featureName.toLowerCase()} is {impactDescription}, according to the model. 
+              {transformedValues[index] && (
+                <span> For the input value '{featureName}: {transformedValues[index]}', </span>
+              )}
+              {transformedValues[index] && (
+                <span>the model predicts a retention score of {value.toFixed(3)}. </span>
+              )}
+              {transformedValues[index] && (
+                <span>This indicates that {featureName.toLowerCase()} has a {impactDescription} impact on retention.</span>
+              )}
+              <br /><br />
+            </div>
+          );
+        });
+
     return featureExplanations;
+}
+
+function convertFeatureValues(featureValues) {
+    const transformedValues = featureValues.map((value, index) => {
+        switch (index) {
+            case 2:
+                return value + " years old";
+              case 3:
+                return value === 0 ? 'Female' : 'Male';
+              case 4:
+                return value === 0 ? 'No' : 'Yes';
+              case 5:
+                return value + " years of experience";
+              case 6:
+                return value === 4 ? "Bachelor" : (value === 2 ? "Master" : "PHD");
+              case 7:
+                return value === 4 ? "Bachelor" : (value === 2 ? "Master" : "PHD");
+              case 8:
+                return value === 4 ? "Bachelor" : (value === 2 ? "Master" : "PHD");
+              default:
+                return value;
+        }
+      });
+    
+      return transformedValues;
 }
 
 export default PredictionResult

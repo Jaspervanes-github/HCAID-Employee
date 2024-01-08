@@ -3,10 +3,11 @@
     height: fit-content;
     display: flex;
     align-items: center;
-    margin-top: 5%;
     padding: 10px;
     flex-direction: column;
-    margin-left: 30%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
     background-color: rgba(208, 208, 208, 0.8);
     border-radius: 10px;
 }
